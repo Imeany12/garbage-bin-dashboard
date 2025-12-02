@@ -1,22 +1,26 @@
-import React from 'react';
-import useSensorData from '../hooks/useSensorData.jsx';
-import useSensorHistory from '../hooks/useSensorHistory.jsx';
-import useAlerts from '../hooks/useAlerts.jsx';
-import BinFillLevel from './BinFillLevel.jsx';
-import WeightDisplay from './WeightDisplay.jsx';
-import DistanceDisplay from './DistanceDisplay.jsx';
-import LidStatus from './LidStatus.jsx';
-import WeightChart from './WeightChart.jsx';
-import DistanceChart from './DistanceChart.jsx';
-import AlertsList from './AlertsList.jsx';
-import LoadingSpinner from './LoadingSpinner.jsx';
+import React from "react";
+import useSensorData from "../hooks/useSensorData.jsx";
+import useSensorHistory from "../hooks/useSensorHistory.jsx";
+import useAlerts from "../hooks/useAlerts.jsx";
+import useTrashCount from "../hooks/useTrashCount.jsx";
+import BinFillLevel from "./BinFillLevel.jsx";
+import WeightDisplay from "./WeightDisplay.jsx";
+import DistanceDisplay from "./DistanceDisplay.jsx";
+import LidStatus from "./LidStatus.jsx";
+import TrashCountDisplay from "./TrashCountDisplay.jsx";
+import WeightChart from "./WeightChart.jsx";
+import DistanceChart from "./DistanceChart.jsx";
+import AlertsList from "./AlertsList.jsx";
+import LoadingSpinner from "./LoadingSpinner.jsx";
 
 function Dashboard() {
   const { currentData, loading: sensorLoading } = useSensorData();
   const { history, loading: historyLoading } = useSensorHistory();
   const { alerts, loading: alertsLoading } = useAlerts();
+  const { trashCount, loading: trashLoading } = useTrashCount();
 
-  const isLoading = sensorLoading || historyLoading || alertsLoading;
+  const isLoading =
+    sensorLoading || historyLoading || alertsLoading || trashLoading;
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -28,15 +32,20 @@ function Dashboard() {
         <h1 className="text-3xl font-bold text-gray-900">
           IoT Garbage Bin Monitor
         </h1>
-        <p className="text-gray-600 mt-2">Real-time sensor data and analytics</p>
+        <p className="text-gray-600 mt-2">
+          Real-time sensor data and analytics
+        </p>
       </header>
 
-      {/* Stats Grid - 4 cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <BinFillLevel percentage={currentData?.bin_percentage} isFull={currentData?.bin_full} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+        <BinFillLevel
+          percentage={currentData?.bin_percentage}
+          isFull={currentData?.bin_full}
+        />
         <WeightDisplay weight={currentData?.weight} />
         <DistanceDisplay distance={currentData?.distance} />
         <LidStatus status={currentData?.lid_status} />
+        <TrashCountDisplay count={trashCount.count} />
       </div>
 
       {/* Charts Grid - 2 charts side by side */}

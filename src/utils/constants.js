@@ -9,6 +9,9 @@ export const BIN_THRESHOLDS = {
   HIGH: 90,
 };
 
+// Weight thresholds
+export const WEIGHT_FULL = 100; // Full weight threshold in grams
+
 // Refresh intervals (if needed for non-realtime fallback)
 export const REFRESH_INTERVAL = 5000; // 5 seconds
 
